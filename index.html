@@ -835,8 +835,8 @@ let mouseY = window.innerHeight / 2;
 
 // Core chain: ball → head → body. Tight spacing so parts barely separate.
 const chain = [
-  { el: document.getElementById('catBall'), x: mouseX, y: mouseY, spacing: 0,  ease: 0.42 },
-  { el: document.getElementById('catHead'), x: mouseX, y: mouseY, spacing: 16, ease: 0.40 },
+  { el: document.getElementById('catBall'), x: mouseX, y: mouseY, spacing: 0,  ease: 0.45 },
+  { el: document.getElementById('catHead'), x: mouseX, y: mouseY, spacing: 40, ease: 0.22 },
   { el: document.getElementById('catBody'), x: mouseX, y: mouseY, spacing: 6,  ease: 0.42 },
 ];
 const ballPart = chain[0];
@@ -853,6 +853,7 @@ const backPawR  = { el: document.getElementById('catBackPaw2'),  x: mouseX, y: m
 // Track movement direction so parts trail BEHIND the ball, not on top of it.
 let dirX = 1, dirY = 0; // default direction (right)
 let prevMX = mouseX, prevMY = mouseY;
+let speed = 0; // smoothed movement speed (px/frame)
 
 const allParts = [ballPart, headPart, bodyPart, tailPart, frontPawL, frontPawR, backPawL, backPawR];
 
@@ -894,12 +895,18 @@ function animateCat() {
   prevMX = mouseX;
   prevMY = mouseY;
 
-  // Chain follow (ball → head → body)
+  // Smooth the movement speed, then derive a 0..1 factor so head spacing
+  // collapses to 0 at rest (ball sits inside the head) and expands during motion.
+  speed += (len - speed) * 0.15;
+  const speedFactor = Math.min(speed / 6, 1);
+
+  // Chain follow (ball → head → body). Head spacing scales with speed.
   let prevX = mouseX;
   let prevY = mouseY;
   chain.forEach((p) => {
-    const targetX = prevX - dirX * p.spacing;
-    const targetY = prevY - dirY * p.spacing;
+    const effectiveSpacing = p.spacing * (p === headPart ? speedFactor : 1);
+    const targetX = prevX - dirX * effectiveSpacing;
+    const targetY = prevY - dirY * effectiveSpacing;
     p.x += (targetX - p.x) * p.ease;
     p.y += (targetY - p.y) * p.ease;
     p.el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
