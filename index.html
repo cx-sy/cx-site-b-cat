@@ -836,8 +836,8 @@ let mouseY = window.innerHeight / 2;
 // Core chain: ball → head → body. Tight spacing so parts barely separate.
 const chain = [
   { el: document.getElementById('catBall'), x: mouseX, y: mouseY, spacing: 0,  ease: 0.42 },
-  { el: document.getElementById('catHead'), x: mouseX, y: mouseY, spacing: 12, ease: 0.28 },
-  { el: document.getElementById('catBody'), x: mouseX, y: mouseY, spacing: 14, ease: 0.20 },
+  { el: document.getElementById('catHead'), x: mouseX, y: mouseY, spacing: 16, ease: 0.40 },
+  { el: document.getElementById('catBody'), x: mouseX, y: mouseY, spacing: 6,  ease: 0.42 },
 ];
 const ballPart = chain[0];
 const headPart = chain[1];
@@ -926,7 +926,7 @@ function animateCat() {
   const bL_tx = bCenterX - BACK_SPREAD,  bL_ty = pawsY;
   const bR_tx = bCenterX + BACK_SPREAD,  bR_ty = pawsY;
 
-  const pawEase = 0.30;
+  const pawEase = 0.50;
   frontPawL.x += (fL_tx - frontPawL.x) * pawEase;
   frontPawL.y += (fL_ty - frontPawL.y) * pawEase;
   frontPawR.x += (fR_tx - frontPawR.x) * pawEase;
@@ -942,8 +942,8 @@ function animateCat() {
   backPawR.el.style.transform  = `translate(${backPawR.x}px, ${backPawR.y}px) translate(-50%, -50%)`;
 
   // ── Tail: bottom of tail at body center, doesn't separate from body ──
-  tailPart.x += (bodyPart.x - tailPart.x) * 0.32;
-  tailPart.y += (bodyPart.y - tailPart.y) * 0.32;
+  tailPart.x += (bodyPart.x - tailPart.x) * 0.55;
+  tailPart.y += (bodyPart.y - tailPart.y) * 0.55;
   // translate(-50%, -100%) → tail's bottom-center anchors at (tailX, tailY) = body center
   tailPart.el.style.transform = `translate(${tailPart.x}px, ${tailPart.y}px) translate(-50%, -100%)`;
 
