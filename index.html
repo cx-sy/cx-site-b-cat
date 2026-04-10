@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CX Works — Type B</title>
+<style>
+@font-face {
+  font-family: 'CXBaseFont';
+  src: url('./public/fonts/ABC Whyte Hangul Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'CXBoldFont';
+  src: url('./public/fonts/ABC Whyte Hangul Inktrap Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'CXBookFont';
+  src: url('./public/fonts/ABC Whyte Hangul Book.woff2') format('woff2');
+  font-weight: 450; font-style: normal; font-display: swap;
+}
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --line: 1px solid #000;
+  --gap: 10px;
+  --text-1: 11px;
+  --text-2: 13px;
+  --text-3: 14px;
+  --title-main: 26px;
+  --title-open: 15px;
+  --detail-title: 24px;
+  --col-fifth: 384px;
+  --contact-bg: #F2F2F2;
+}
+
+* { box-sizing: border-box; }
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--white); color: var(--black);
+  font-family: 'CXBaseFont', Arial, Helvetica, sans-serif;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+button, input, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+textarea { resize: none; }
+
+/* ── HEADER ── */
+.site-header {
+  flex: 0 0 auto;
+  background: #000;
+  border-bottom: 1px solid #333;
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--gap);
+}
+.brand {
+  font-family: 'CXBoldFont', 'CXBaseFont', Arial, Helvetica, sans-serif;
+  font-size: 50px; font-weight: 700; line-height: 1; letter-spacing: -0.02em;
+  color: #fff;
+}
+.header-nav { display: flex; align-items: center; gap: 60px; padding-right: 10px; }
+.header-label { font-size: 18px; line-height: 1; font-weight: 400; }
+.header-label a { color: #fff; text-decoration: none; }
+.header-label a:hover { opacity: 0.5; }
+
+/* ── MAIN ── */
+.site-main { flex: 1 1 0; min-height: 0; overflow: hidden; }
+
+/* ── LAYOUT ── */
+.layout {
+  display: grid; gap: 0;
+  grid-template-columns: minmax(0, 1fr) var(--col-fifth);
+  height: 100%; min-height: 0; max-height: 100%;
+}
+.layout.is-open {
+  grid-template-columns: var(--col-fifth) minmax(0, 1fr) var(--col-fifth);
+}
+
+/* ── INDEX COLUMN ── */
+.index-column {
+  height: 100%; min-height: 0; overflow-y: auto; padding-bottom: 24px;
+}
+
+/* ── DETAIL COLUMN ── */
+.detail-column { display: none; height: 100%; min-height: 0; overflow: hidden; }
+.layout.is-open .detail-column {
+  display: flex; flex-direction: column; border-left: var(--line);
+}
+
+/* ── CONTACT COLUMN ── */
+.contact-column {
+  border-left: var(--line);
+  padding: 16px;
+  height: 100%; min-height: 0; overflow-y: auto;
+  display: flex; flex-direction: column;
+  background: var(--contact-bg);
+}
+.contact-about {
+  font-size: calc(var(--text-3) * 1.4); line-height: 1.65;
+}
+.contact-inquiry-section {
+  margin-top: calc(var(--text-3) * 1.65 * 6 + 16px); /* ≈ about text block height */
+  border-top: var(--line);
+  padding-top: 6px;
+}
+.contact-heading {
+  margin: 0 0 16px 0;
+  font-size: 20px; line-height: 1.08; font-weight: 400;
+}
+.contact-form { display: flex; flex-direction: column; gap: 0; }
+.form-group {
+  border-bottom: 1px solid #000;
+  padding: 10px 0;
+}
+.form-group:first-child { border-top: none; }
+.form-label {
+  display: block; font-size: var(--text-1); color: #000;
+  margin-bottom: 4px; font-weight: 400;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%; border: none; border-radius: 0;
+  background: #fff; padding: 10px 12px; outline: none;
+  font-size: var(--text-3); font-family: inherit;
+}
+.form-group textarea { min-height: 100px; }
+.send-button {
+  display: block; width: 100%; text-align: center;
+  border: none; padding: 14px;
+  font-size: var(--text-3); line-height: 1; font-weight: 400;
+  margin-top: 12px; cursor: pointer;
+  background: #000; color: #fff;
+}
+.send-button:hover { opacity: 0.8; }
+.copyright {
+  font-size: var(--text-1); color: #000; margin-top: auto; padding-top: 20px; text-align: left;
+}
+
+/* ── PROJECT LIST ── */
+.project-list { display: flex; flex-direction: column; }
+
+.project-item {
+  display: block; width: 100%; text-align: left;
+  border-top: var(--line);
+  padding: 0;
+  transition: background 180ms ease, color 180ms ease;
+}
+.project-item:first-child { border-top: 0; }
+
+/* Default: text | thumb (1/5 viewport) */
+.project-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--col-fifth);
+  gap: 0; align-items: stretch;
+  min-height: 130px;
+  position: relative;
+  transition: all 180ms ease;
+}
+
+.project-meta {
+  padding: var(--gap);
+  display: flex; flex-direction: column; gap: 6px;
+  justify-content: flex-start;
+  position: relative; z-index: 2;
+  transition: background 180ms ease;
+}
+
+.project-thumb {
+  width: 100%; height: 100%; min-height: 130px;
+  overflow: hidden;
+  position: relative; z-index: 1;
+  transition: all 300ms ease;
+}
+
+/* ── Hover: image fills entire row, text overlays on top ── */
+.project-item:hover .project-thumb {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  min-height: auto;
+}
+.project-item:hover .project-meta {
+  background: transparent;
+  z-index: 2;
+}
+.project-item:hover .project-title {
+  color: #fff;
+}
+.project-item:hover .tag {
+  opacity: 0.9;
+}
+
+/* When detail is open: single column, no image */
+.layout.is-open .project-row {
+  grid-template-columns: 1fr;
+  min-height: auto;
+  height: 100%;
+}
+.layout.is-open .project-thumb { display: none; }
+.layout.is-open .project-meta {
+  padding: 8px var(--gap);
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* Detail open hover: entire item goes black */
+.layout.is-open .project-item:hover {
+  background: #000;
+}
+.layout.is-open .project-item:hover .project-meta {
+  background: #000;
+}
+.layout.is-open .project-item:hover .project-title {
+  color: #fff;
+}
+
+/* Active item */
+.layout.is-open .project-item.is-active {
+  background: #000;
+}
+.project-item.is-active .project-meta { background: #000; }
+.project-item.is-active .project-title { color: #fff; }
+.project-item.is-active .tag { opacity: 0.7; }
+
+.project-title {
+  margin: 0; font-size: var(--title-main); line-height: 1.12; font-weight: 400;
+  transition: color 180ms ease;
+}
+.layout.is-open .project-title { font-size: var(--title-open); line-height: 1.2; }
+
+/* ── TAGS — ALL text black, unique vibrant colors ── */
+.tag-list, .detail-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+.tag {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 22px; padding: 3px 10px;
+  border-radius: 999px;
+  font-family: 'CXBookFont', 'CXBaseFont', Arial, Helvetica, sans-serif;
+  font-size: var(--text-2); line-height: 1;
+  white-space: nowrap;
+  transition: opacity 180ms ease;
+  border: 1px solid transparent;
+  color: #000;
+}
+/* Editorial Design = magenta */
+.tag--editorial-design { background: #FF00FF; }
+/* Art Direction = lime */
+.tag--art-direction { background: #CCFF00; }
+/* 2d Video = purple */
+.tag--2d-video { background: #8E2CFF; }
+/* Photography = mint */
+.tag--photography { background: #00E5A0; }
+/* Character Design = red */
+.tag--character-design { background: #FF0000; }
+/* Presentation Design = cyan */
+.tag--presentation-design { background: #00E5FF; }
+/* Graphics Design = green */
+.tag--graphics-design { background: #00FF00; }
+/* Others — all unique, no gray */
+.tag--narrative { background: #FF6B00; }
+.tag--campaign { background: #00E5A0; }
+.tag--strategy { background: #FF4081; }
+.tag--direction { background: #40C4FF; }
+.tag--b2b { background: #E040FB; }
+.tag--system { background: #76FF03; }
+.tag--office { background: #FFAB40; }
+.tag--archive { background: #7C4DFF; }
+.tag--documentation { background: #18FFFF; }
+.tag--mobile { background: #FF6E40; }
+.tag--editorial { background: #FF00FF; }
+.tag--default { background: #B388FF; }
+
+/* ── DETAIL ── */
+.detail-shell {
+  display: flex; flex-direction: column; flex: 1 1 0;
+  min-height: 0; position: relative; overflow: hidden;
+}
+.detail-header {
+  flex: 0 0 auto; padding: var(--gap);
+  position: relative;
+}
+.close-button {
+  position: absolute; top: var(--gap); right: var(--gap); z-index: 10;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  background: none; border: none; padding: 0; cursor: pointer;
+}
+.close-button::before, .close-button::after {
+  content: ''; position: absolute;
+  width: 22px; height: 1px; background: #000;
+  top: 50%; left: 50%;
+}
+.close-button::before { transform: translate(-50%, -50%) rotate(45deg); }
+.close-button::after { transform: translate(-50%, -50%) rotate(-45deg); }
+.close-button:hover { opacity: 0.5; }
+
+.detail-scroll {
+  flex: 1 1 0; min-height: 0; overflow-y: auto; padding-bottom: 24px;
+}
+.detail-title {
+  margin: 0; font-size: var(--detail-title); line-height: 1.12; font-weight: 400;
+  padding-right: 40px;
+}
+.detail-meta {
+  margin-top: 8px; font-size: var(--text-3); line-height: 1.4; color: #000;
+}
+.detail-tags { margin-top: 10px; }
+.detail-gallery { display: flex; flex-direction: column; gap: 0; }
+.detail-img { width: 100%; background: #ddd; }
+.detail-img--hero { aspect-ratio: 16 / 10; }
+.detail-img--wide { aspect-ratio: 16 / 9; }
+.detail-img--pair-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.detail-img--vertical { aspect-ratio: 4 / 5; }
+.detail-img--medium { aspect-ratio: 3 / 2; }
+
+/* ── HAMBURGER ── */
+.hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  width: 24px; height: 24px; background: none; border: none; padding: 0; cursor: pointer;
+}
+.hamburger span { display: block; width: 100%; height: 1px; background: #fff; }
+
+/* ── MOBILE CONTACT BUTTON (home state) ── */
+.mobile-contact-btn {
+  display: none;
+  position: fixed; bottom: 16px; left: 16px; right: 16px;
+  z-index: 90;
+  text-align: center; padding: 14px;
+  background: #000; color: #fff;
+  border: none; font-size: var(--text-3);
+  font-family: inherit; cursor: pointer;
+}
+.mobile-contact-btn:hover { opacity: 0.8; }
+
+/* ── MOBILE CONTACT OVERLAY ── */
+.mobile-contact-overlay {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 200; background: var(--contact-bg);
+  padding: 16px; padding-top: 70px;
+  overflow-y: auto;
+  flex-direction: column;
+}
+.mobile-contact-overlay.is-visible { display: flex; }
+.mobile-contact-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 26px; height: 26px; background: none; border: none; cursor: pointer;
+}
+.mobile-contact-close::before, .mobile-contact-close::after {
+  content: ''; position: absolute;
+  width: 22px; height: 1px; background: #000;
+  top: 50%; left: 50%;
+}
+.mobile-contact-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.mobile-contact-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+/* ── RESPONSIVE: TABLET ── */
+@media (max-width: 1279px) {
+  .site-main { overflow: visible; }
+  body { height: auto; overflow: auto; }
+  .layout, .layout.is-open { grid-template-columns: 1fr; height: auto; }
+  .index-column, .detail-column, .contact-column { height: auto; overflow: visible; }
+  .layout.is-open .detail-column {
+    display: flex; border-top: var(--line); border-left: 0;
+  }
+  .layout.is-open .project-row { grid-template-columns: 1fr; }
+  .layout.is-open .project-thumb { display: none; }
+  .detail-header { position: static; }
+  .detail-scroll { overflow: visible; padding-bottom: 0; }
+  .contact-column { border-top: var(--line); border-left: 0; }
+  .project-row { grid-template-columns: 1fr 40vw; }
+}
+
+/* ── RESPONSIVE: MOBILE ── */
+@media (max-width: 767px) {
+  :root { --title-main: 20px; --title-open: 14px; --detail-title: 20px; }
+  .brand { font-size: 30px; }
+  .header-nav { gap: 20px; }
+  .header-label { font-size: 15px; }
+  .project-row { grid-template-columns: 1fr !important; min-height: 280px; }
+  .project-thumb { min-height: 200px; }
+
+  /* Mobile hover: image fills row, title overlays in white on top (no height shrink) */
+  .project-item:hover .project-meta,
+  .project-item:active .project-meta {
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: var(--gap);
+    background: transparent;
+    z-index: 2;
+  }
+  .project-item:hover .project-title,
+  .project-item:active .project-title { color: #fff; }
+
+  /* Home: show contact button, hide contact column */
+  .contact-column { display: none !important; }
+  .mobile-contact-btn { display: block; }
+
+  /* Detail open: restore full-height layout, single column */
+  body.detail-open { height: 100vh; overflow: hidden; }
+  body.detail-open .site-main { flex: 1 1 0; min-height: 0; overflow: hidden; }
+  .layout.is-open {
+    grid-template-columns: 1fr !important;
+    height: 100% !important; max-height: 100% !important;
+  }
+  .layout.is-open .index-column { display: none; }
+  .layout.is-open .hamburger { display: flex; }
+  .layout.is-open .header-nav { display: none; }
+  .layout.is-open .detail-column {
+    display: flex !important; flex-direction: column !important;
+    border-left: none; border-top: none;
+    height: 100% !important; min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  .layout.is-open .detail-shell {
+    flex: 1 1 0; min-height: 0; overflow: hidden;
+  }
+  .layout.is-open .detail-scroll {
+    flex: 1 1 0; min-height: 0; overflow-y: auto !important;
+  }
+  .layout.is-open .mobile-contact-btn { display: none; }
+
+  /* Index overlay from hamburger */
+  .index-column.mobile-overlay {
+    display: block !important;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 100; background: #fff;
+    padding: var(--gap); padding-top: 80px;
+    overflow-y: auto;
+  }
+  .index-column.mobile-overlay .project-thumb { display: none; }
+  .index-column.mobile-overlay .project-row { grid-template-columns: 1fr !important; }
+  .index-column.mobile-overlay .project-item { height: auto !important; }
+}
+.mobile-contact-btn { z-index: 90; }
+
+/* ── CAT CURSOR (chases ball) ── */
+/* Hide the OS mouse pointer — ball + cat replace it */
+html, body, a, button, .project-item, .close-button,
+.hamburger, .mobile-contact-btn, .send-button,
+.header-label a, .tag { cursor: none; }
+input, textarea, [contenteditable] { cursor: text; }
+
+.cat-part {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  will-change: transform;
+  transform-origin: center center;
+}
+.cat-part.is-visible { opacity: 1; }
+
+/* Ball — magenta 27px (the cursor) */
+.cat-part--ball {
+  width: 27px; height: 27px;
+  background: #FF00FF;
+  border-radius: 50%;
+  z-index: 10000;
+}
+
+/* Head — ~78×78 */
+.cat-part--head { width: 78px; height: 78px; z-index: 9998; }
+/* Body — ~97×97 */
+.cat-part--body { width: 97px; height: 97px; z-index: 9996; }
+/* Tail — ~41×119 */
+.cat-part--tail { width: 41px; height: 119px; z-index: 9994; }
+/* Paws — ~26×26 */
+.cat-part--paw { width: 26px; height: 26px; z-index: 9997; }
+
+.cat-part img {
+  display: block;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+body.cursor-over-input .cat-part { opacity: 0; }
+@media (max-width: 767px) {
+  html, body, a, button, .project-item, .close-button,
+  .hamburger, .mobile-contact-btn, .send-button,
+  .header-label a, .tag { cursor: auto; }
+  .cat-part { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cat cursor: magenta ball leads, cat parts chase it -->
+<div class="cat-part cat-part--ball" id="catBall"></div>
+<div class="cat-part cat-part--head" id="catHead">
+  <img src="./public/svg/head.svg" alt="">
+</div>
+<div class="cat-part cat-part--paw" id="catFrontPaw1">
+  <img src="./public/svg/front-paw-1.svg" alt="">
+</div>
+<div class="cat-part cat-part--paw" id="catFrontPaw2">
+  <img src="./public/svg/front-paw-2.svg" alt="">
+</div>
+<div class="cat-part cat-part--body" id="catBody">
+  <img src="./public/svg/body.svg" alt="">
+</div>
+<div class="cat-part cat-part--paw" id="catBackPaw1">
+  <img src="./public/svg/back-paw-1.svg" alt="">
+</div>
+<div class="cat-part cat-part--paw" id="catBackPaw2">
+  <img src="./public/svg/back-paw-2.svg" alt="">
+</div>
+<div class="cat-part cat-part--tail" id="catTail">
+  <img src="./public/svg/tail.svg" alt="">
+</div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <div class="brand">CX</div>
+    <button class="hamburger" id="hamburgerButton" type="button" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="header-nav">
+      <div class="header-label"><a href="#">About</a></div>
+      <div class="header-label"><a href="#">Works</a></div>
+      <div class="header-label"><a href="#">Archive</a></div>
+    </nav>
+  </div>
+</header>
+
+<main class="site-main">
+  <div class="layout" id="layout">
+    <section class="index-column" id="indexColumn">
+      <div class="project-list" id="projectList"></div>
+    </section>
+    <section class="detail-column" id="detailColumn">
+      <div class="detail-shell">
+        <div class="detail-header">
+          <button class="close-button" id="closeButton" type="button" aria-label="close"></button>
+          <div id="detailHeaderContent"></div>
+        </div>
+        <div class="detail-scroll">
+          <article id="detailContent"></article>
+        </div>
+      </div>
+    </section>
+    <aside class="contact-column" id="contactColumn">
+      <div class="contact-about">
+        씨엑스의 성과물은<br>
+        탄탄한 기획력과 논리를 바탕으로 보이는 것<br>
+        이상의 의미와 가치를 담고자 합니다.<br>
+        우리가 만들어낸 결과물이 본래의 취지에 맞게,<br>
+        고객사에게 최고의 기여를 할 수 있도록<br>
+        보이지 않는 디테일까지 최선을 다합니다.
+      </div>
+      <div class="contact-inquiry-section">
+        <h2 class="contact-heading">프로젝트 문의</h2>
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label class="form-label">프로젝트 제목</label>
+            <input type="text" placeholder="" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">프로젝트 내용</label>
+            <textarea rows="4" placeholder=""></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">담당자 정보</label>
+            <input type="text" placeholder="" />
+          </div>
+          <button class="send-button" type="submit">문의하기</button>
+        </form>
+      </div>
+      <div class="copyright">Copyright &copy; CX All rights reserved.</div>
+    </aside>
+  </div>
+</main>
+
+<!-- Mobile: contact inquiry button (home state) -->
+<button class="mobile-contact-btn" id="mobileContactBtn">프로젝트 문의</button>
+
+<!-- Mobile: contact overlay -->
+<div class="mobile-contact-overlay" id="mobileContactOverlay">
+  <button class="mobile-contact-close" id="mobileContactClose"></button>
+  <div class="contact-about" style="margin-bottom:20px;">
+    씨엑스의 성과물은<br>
+    탄탄한 기획력과 논리를 바탕으로 보이는 것<br>
+    이상의 의미와 가치를 담고자 합니다.<br>
+    우리가 만들어낸 결과물이 본래의 취지에 맞게,<br>
+    고객사에게 최고의 기여를 할 수 있도록<br>
+    보이지 않는 디테일까지 최선을 다합니다.
+  </div>
+  <div class="contact-inquiry-section" style="margin-top:0;">
+    <h2 class="contact-heading">프로젝트 문의</h2>
+    <form class="contact-form">
+      <div class="form-group">
+        <label class="form-label">프로젝트 제목</label>
+        <input type="text" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">프로젝트 내용</label>
+        <textarea rows="4"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">담당자 정보</label>
+        <input type="text" />
+      </div>
+      <button class="send-button" type="submit">문의하기</button>
+    </form>
+  </div>
+  <div class="copyright" style="margin-top:auto; padding-top:20px;">Copyright &copy; CX All rights reserved.</div>
+</div>
+
+<script>
+const TAG_COLORS = {
+  'editorial design': 'editorial-design',
+  'art direction': 'art-direction',
+  '2d video': '2d-video',
+  'photography': 'photography',
+  'character design': 'character-design',
+  'presentation design': 'presentation-design',
+  'graphics design': 'graphics-design',
+  'narrative': 'narrative',
+  'campaign': 'campaign',
+  'strategy': 'strategy',
+  'direction': 'direction',
+  'b2b': 'b2b',
+  'system': 'system',
+  'office': 'office',
+  'archive': 'archive',
+  'documentation': 'documentation',
+  'mobile': 'mobile',
+  'editorial': 'editorial',
+};
+
+const projects = [
+  {
+    id: 1,
+    title: "IT'S — HERE : 나라 밖 빛나는 한국 옛 그림",
+    year: '2025', client: '국외소재문화유산재단',
+    tags: ['Editorial Design', 'Art Direction'],
+    colors: ['#7BA5B5', '#8FADB8', '#B5C8CE', '#9BB5BD', '#A3BCC3', '#C2D4D9']
+  },
+  {
+    id: 2,
+    title: 'Genesis Road Trip',
+    year: '2024', client: 'Genesis',
+    tags: ['2d Video', 'Art Direction', 'Photography'],
+    colors: ['#C5B9A8', '#D4C9B8', '#B8AE9F', '#CABFAF', '#D0C6B7', '#BFB5A6']
+  },
+  {
+    id: 3,
+    title: 'Coral In Focus Social Asset',
+    year: '2025', client: 'Samsung Electronics',
+    tags: ['Editorial Design', 'Art Direction', 'Character Design'],
+    colors: ['#E8A0A0', '#D4E8D4', '#F0D0A0', '#C8E0B0', '#F0C0C0', '#D0E8C0']
+  },
+  {
+    id: 4,
+    title: 'Galaxy S26 Unpacked BriefingDeck',
+    year: '2026', client: 'Samsung Electronics MX',
+    tags: ['Art Direction', 'Presentation Design', 'Graphics Design'],
+    colors: ['#2A2A2A', '#3A3A3A', '#1A1A1A', '#333', '#444', '#2D2D2D']
+  },
+  {
+    id: 5,
+    title: 'Coral In Focus Social Asset',
+    year: '2025', client: 'Samsung Electronics',
+    tags: ['Editorial Design', 'Art Direction', 'Character Design'],
+    colors: ['#E8A0A0', '#F0D0D0', '#D4E8D4', '#C8E0B0', '#F0C0C0', '#D0E8C0']
+  },
+  {
+    id: 6,
+    title: 'Galaxy Unpacked BriefingDeck Watch, Ring, Flip/Fold, Buds',
+    year: '2025', client: 'Samsung Electronics MX',
+    tags: ['Art Direction', 'Presentation Design', 'Graphics Design'],
+    colors: ['#D4B896', '#C8A882', '#E0C8A8', '#CAAD8E', '#D8C0A0', '#C0A880']
+  },
+  {
+    id: 7,
+    title: 'Galaxy S26 Unpacked BriefingDeck',
+    year: '2026', client: 'Samsung Electronics MX',
+    tags: ['Art Direction', 'Presentation Design', 'Graphics Design'],
+    colors: ['#2A2A2A', '#3A3A3A', '#1A1A1A', '#333', '#444', '#2D2D2D']
+  },
+  {
+    id: 8,
+    title: "IT'S — HERE : 나라 밖 빛나는 한국 옛 그림",
+    year: '2025', client: '국외소재문화유산재단',
+    tags: ['Editorial Design', 'Art Direction'],
+    colors: ['#7BA5B5', '#8FADB8', '#B5C8CE', '#9BB5BD', '#A3BCC3', '#C2D4D9']
+  }
+];
+
+const layout = document.getElementById('layout');
+const indexColumn = document.getElementById('indexColumn');
+const projectList = document.getElementById('projectList');
+const detailHeaderContent = document.getElementById('detailHeaderContent');
+const detailContent = document.getElementById('detailContent');
+const closeButton = document.getElementById('closeButton');
+const mobileContactBtn = document.getElementById('mobileContactBtn');
+const mobileContactOverlay = document.getElementById('mobileContactOverlay');
+const mobileContactClose = document.getElementById('mobileContactClose');
+let activeId = null;
+
+function tagClass(tag) {
+  const key = tag.toLowerCase();
+  return TAG_COLORS[key] || 'default';
+}
+
+function tagHTML(tags) {
+  return tags.map(t => `<span class="tag tag--${tagClass(t)}">${t}</span>`).join('');
+}
+
+function renderList() {
+  projectList.innerHTML = projects.map(p => `
+    <button class="project-item" type="button" data-id="${p.id}">
+      <div class="project-row">
+        <div class="project-meta">
+          <h2 class="project-title">${p.title}</h2>
+          <div class="tag-list">${tagHTML(p.tags)}</div>
+        </div>
+        <div class="project-thumb" style="background:${p.colors[0]}"></div>
+      </div>
+    </button>
+  `).join('');
+
+  projectList.querySelectorAll('.project-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeId = Number(btn.dataset.id);
+      renderState();
+    });
+  });
+}
+
+function renderDetail() {
+  const p = projects.find(i => i.id === activeId);
+  if (!p) { detailHeaderContent.innerHTML = ''; detailContent.innerHTML = ''; return; }
+
+  detailHeaderContent.innerHTML = `
+    <h1 class="detail-title">${p.title}</h1>
+    <div class="detail-meta">Year. ${p.year} / Client. ${p.client}</div>
+    <div class="detail-tags">${tagHTML(p.tags)}</div>
+  `;
+
+  detailContent.innerHTML = `
+    <div class="detail-gallery">
+      <div class="detail-img detail-img--hero" style="background:${p.colors[0]}"></div>
+      <div class="detail-img detail-img--wide" style="background:${p.colors[1]}"></div>
+      <div class="detail-img--pair-wrap">
+        <div class="detail-img detail-img--vertical" style="background:${p.colors[2]}"></div>
+        <div class="detail-img detail-img--vertical" style="background:${p.colors[3]}"></div>
+      </div>
+      <div class="detail-img detail-img--medium" style="background:${p.colors[4]}"></div>
+      <div class="detail-img detail-img--wide" style="background:${p.colors[5]}"></div>
+    </div>
+  `;
+}
+
+function syncIndexHeight() {
+  const detailHeader = document.querySelector('.detail-header');
+  if (!detailHeader || !layout.classList.contains('is-open')) {
+    projectList.querySelectorAll('.project-item').forEach(btn => {
+      btn.style.height = '';
+    });
+    return;
+  }
+  requestAnimationFrame(() => {
+    const h = detailHeader.offsetHeight;
+    projectList.querySelectorAll('.project-item').forEach(btn => {
+      btn.style.height = h + 'px';
+      btn.style.overflow = 'hidden';
+    });
+  });
+}
+
+function renderState() {
+  const isOpen = activeId !== null;
+  layout.classList.toggle('is-open', isOpen);
+  document.body.classList.toggle('detail-open', isOpen);
+
+  projectList.querySelectorAll('.project-item').forEach(btn => {
+    const id = Number(btn.dataset.id);
+    btn.classList.toggle('is-active', isOpen && id === activeId);
+  });
+
+  if (isOpen) { renderDetail(); syncIndexHeight(); }
+  else {
+    detailHeaderContent.innerHTML = ''; detailContent.innerHTML = '';
+    syncIndexHeight();
+  }
+}
+
+closeButton.addEventListener('click', () => {
+  activeId = null;
+  indexColumn.classList.remove('mobile-overlay');
+  renderState();
+});
+
+const hamburgerButton = document.getElementById('hamburgerButton');
+hamburgerButton.addEventListener('click', () => {
+  indexColumn.classList.toggle('mobile-overlay');
+});
+
+function attachMobileClose() {
+  projectList.querySelectorAll('.project-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      indexColumn.classList.remove('mobile-overlay');
+    });
+  });
+}
+
+// Mobile contact overlay
+mobileContactBtn.addEventListener('click', () => {
+  mobileContactOverlay.classList.add('is-visible');
+});
+mobileContactClose.addEventListener('click', () => {
+  mobileContactOverlay.classList.remove('is-visible');
+});
+
+renderList();
+attachMobileClose();
+renderState();
+
+// ── Cat cursor — ball leads, cat parts chase in a chain ──
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+
+// Parts (in chain order). `spacing` = pixels behind the previous part in the chain.
+// `ease` = how quickly it catches up (0 = never, 1 = instant).
+const parts = [
+  { el: document.getElementById('catBall'),      x: mouseX, y: mouseY, spacing: 0,  ease: 0.40 },
+  { el: document.getElementById('catHead'),      x: mouseX, y: mouseY, spacing: 38, ease: 0.22 },
+  { el: document.getElementById('catFrontPaw1'), x: mouseX, y: mouseY, spacing: 34, ease: 0.20 },
+  { el: document.getElementById('catFrontPaw2'), x: mouseX, y: mouseY, spacing: 14, ease: 0.20 },
+  { el: document.getElementById('catBody'),      x: mouseX, y: mouseY, spacing: 42, ease: 0.15 },
+  { el: document.getElementById('catBackPaw1'),  x: mouseX, y: mouseY, spacing: 40, ease: 0.13 },
+  { el: document.getElementById('catBackPaw2'),  x: mouseX, y: mouseY, spacing: 14, ease: 0.13 },
+  { el: document.getElementById('catTail'),      x: mouseX, y: mouseY, spacing: 48, ease: 0.08 },
+];
+
+// Track movement direction so parts trail BEHIND the ball, not on top of it.
+let dirX = 1, dirY = 0; // default direction (right)
+let prevMX = mouseX, prevMY = mouseY;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  parts.forEach(p => p.el.classList.add('is-visible'));
+
+  // Hide cursor parts when hovering over text inputs
+  const t = e.target;
+  const isTextInput = t && (
+    t.tagName === 'INPUT' ||
+    t.tagName === 'TEXTAREA' ||
+    t.isContentEditable
+  );
+  document.body.classList.toggle('cursor-over-input', isTextInput);
+});
+document.addEventListener('mouseleave', () => {
+  parts.forEach(p => p.el.classList.remove('is-visible'));
+});
+document.addEventListener('mouseenter', () => {
+  parts.forEach(p => p.el.classList.add('is-visible'));
+});
+
+function animateCat() {
+  // Update movement direction (smoothed)
+  const dx = mouseX - prevMX;
+  const dy = mouseY - prevMY;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  if (len > 0.5) {
+    // Smoothly blend direction toward current movement
+    const nx = dx / len;
+    const ny = dy / len;
+    dirX += (nx - dirX) * 0.15;
+    dirY += (ny - dirY) * 0.15;
+    // Re-normalize
+    const dlen = Math.sqrt(dirX * dirX + dirY * dirY) || 1;
+    dirX /= dlen;
+    dirY /= dlen;
+  }
+  prevMX = mouseX;
+  prevMY = mouseY;
+
+  // Chain follow: each part targets a point behind the previous part, in the OPPOSITE direction of travel
+  let prevX = mouseX;
+  let prevY = mouseY;
+  parts.forEach((p) => {
+    const targetX = prevX - dirX * p.spacing;
+    const targetY = prevY - dirY * p.spacing;
+    p.x += (targetX - p.x) * p.ease;
+    p.y += (targetY - p.y) * p.ease;
+    p.el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
+    prevX = p.x;
+    prevY = p.y;
+  });
+  requestAnimationFrame(animateCat);
+}
+animateCat();
+
+</script>
+</body>
+</html>
