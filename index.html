@@ -469,14 +469,14 @@ input, textarea, [contenteditable] { cursor: text; }
   z-index: 10000;
 }
 
-/* Head — ~39×39 */
-.cat-part--head { width: 39px; height: 39px; z-index: 9998; }
-/* Body — ~48×48 */
-.cat-part--body { width: 48px; height: 48px; z-index: 9996; }
-/* Tail — ~20×60 */
-.cat-part--tail { width: 20px; height: 60px; z-index: 9994; }
-/* Paws — ~13×13 */
-.cat-part--paw { width: 13px; height: 13px; z-index: 9997; }
+/* Head — ~26×26 */
+.cat-part--head { width: 26px; height: 26px; z-index: 9998; }
+/* Body — ~32×32 */
+.cat-part--body { width: 32px; height: 32px; z-index: 9996; }
+/* Tail — ~13×40 */
+.cat-part--tail { width: 13px; height: 40px; z-index: 9994; }
+/* Paws — ~9×9 */
+.cat-part--paw { width: 9px; height: 9px; z-index: 9997; }
 
 .cat-part img {
   display: block;
@@ -836,8 +836,8 @@ let mouseY = window.innerHeight / 2;
 // Core chain: ball → head → body. Tight spacing so parts barely separate.
 const chain = [
   { el: document.getElementById('catBall'), x: mouseX, y: mouseY, spacing: 0,  ease: 0.45 },
-  { el: document.getElementById('catHead'), x: mouseX, y: mouseY, spacing: 40, ease: 0.22 },
-  { el: document.getElementById('catBody'), x: mouseX, y: mouseY, spacing: 6,  ease: 0.42 },
+  { el: document.getElementById('catHead'), x: mouseX, y: mouseY, spacing: 27, ease: 0.22 },
+  { el: document.getElementById('catBody'), x: mouseX, y: mouseY, spacing: 4,  ease: 0.42 },
 ];
 const ballPart = chain[0];
 const headPart = chain[1];
@@ -916,11 +916,11 @@ function animateCat() {
 
   // ── Paws: pairs arranged horizontally on screen x-axis only ──
   // Vertical center (y) = body bottom. Front paws forward of body, back paws behind body.
-  const BODY_RADIUS  = 22; // body is 48px → bottom edge = +22 from center
-  const FRONT_X_OFS  = 10; // forward shift (scaled by dirX for screen-forward direction)
-  const BACK_X_OFS   = 10; // backward shift
-  const FRONT_SPREAD = 7;  // narrow pair spread (screen-horizontal only)
-  const BACK_SPREAD  = 13; // wider pair spread
+  const BODY_RADIUS  = 15; // body is 32px → bottom edge = +15 from center
+  const FRONT_X_OFS  = 7;  // forward shift (scaled by dirX for screen-forward direction)
+  const BACK_X_OFS   = 7;  // backward shift
+  const FRONT_SPREAD = 5;  // narrow pair spread (screen-horizontal only)
+  const BACK_SPREAD  = 9;  // wider pair spread
 
   // "Forward"/"back" uses only the x-component of motion direction so the pair is
   // always a horizontal row on screen, never stacked vertically.
