@@ -463,20 +463,20 @@ input, textarea, [contenteditable] { cursor: text; }
 
 /* Ball — magenta 27px (the cursor) */
 .cat-part--ball {
-  width: 27px; height: 27px;
+  width: 13px; height: 13px;
   background: #FF00FF;
   border-radius: 50%;
   z-index: 10000;
 }
 
-/* Head — ~78×78 */
-.cat-part--head { width: 78px; height: 78px; z-index: 9998; }
-/* Body — ~97×97 */
-.cat-part--body { width: 97px; height: 97px; z-index: 9996; }
-/* Tail — ~41×119 */
-.cat-part--tail { width: 41px; height: 119px; z-index: 9994; }
-/* Paws — ~26×26 */
-.cat-part--paw { width: 26px; height: 26px; z-index: 9997; }
+/* Head — ~39×39 */
+.cat-part--head { width: 39px; height: 39px; z-index: 9998; }
+/* Body — ~48×48 */
+.cat-part--body { width: 48px; height: 48px; z-index: 9996; }
+/* Tail — ~20×60 */
+.cat-part--tail { width: 20px; height: 60px; z-index: 9994; }
+/* Paws — ~13×13 */
+.cat-part--paw { width: 13px; height: 13px; z-index: 9997; }
 
 .cat-part img {
   display: block;
@@ -829,31 +829,37 @@ renderList();
 attachMobileClose();
 renderState();
 
-// ── Cat cursor — ball leads, cat parts chase in a chain ──
+// ── Cat cursor — ball leads, head+body chase in a tight chain; paws & tail attach to body ──
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 
-// Parts (in chain order). `spacing` = pixels behind the previous part in the chain.
-// `ease` = how quickly it catches up (0 = never, 1 = instant).
-const parts = [
-  { el: document.getElementById('catBall'),      x: mouseX, y: mouseY, spacing: 0,  ease: 0.40 },
-  { el: document.getElementById('catHead'),      x: mouseX, y: mouseY, spacing: 38, ease: 0.22 },
-  { el: document.getElementById('catFrontPaw1'), x: mouseX, y: mouseY, spacing: 34, ease: 0.20 },
-  { el: document.getElementById('catFrontPaw2'), x: mouseX, y: mouseY, spacing: 14, ease: 0.20 },
-  { el: document.getElementById('catBody'),      x: mouseX, y: mouseY, spacing: 42, ease: 0.15 },
-  { el: document.getElementById('catBackPaw1'),  x: mouseX, y: mouseY, spacing: 40, ease: 0.13 },
-  { el: document.getElementById('catBackPaw2'),  x: mouseX, y: mouseY, spacing: 14, ease: 0.13 },
-  { el: document.getElementById('catTail'),      x: mouseX, y: mouseY, spacing: 48, ease: 0.08 },
+// Core chain: ball → head → body. Tight spacing so parts barely separate.
+const chain = [
+  { el: document.getElementById('catBall'), x: mouseX, y: mouseY, spacing: 0,  ease: 0.42 },
+  { el: document.getElementById('catHead'), x: mouseX, y: mouseY, spacing: 12, ease: 0.28 },
+  { el: document.getElementById('catBody'), x: mouseX, y: mouseY, spacing: 14, ease: 0.20 },
 ];
+const ballPart = chain[0];
+const headPart = chain[1];
+const bodyPart = chain[2];
+
+// Tail & paws attach directly to body (no trailing chain).
+const tailPart  = { el: document.getElementById('catTail'),      x: mouseX, y: mouseY };
+const frontPawL = { el: document.getElementById('catFrontPaw1'), x: mouseX, y: mouseY };
+const frontPawR = { el: document.getElementById('catFrontPaw2'), x: mouseX, y: mouseY };
+const backPawL  = { el: document.getElementById('catBackPaw1'),  x: mouseX, y: mouseY };
+const backPawR  = { el: document.getElementById('catBackPaw2'),  x: mouseX, y: mouseY };
 
 // Track movement direction so parts trail BEHIND the ball, not on top of it.
 let dirX = 1, dirY = 0; // default direction (right)
 let prevMX = mouseX, prevMY = mouseY;
 
+const allParts = [ballPart, headPart, bodyPart, tailPart, frontPawL, frontPawR, backPawL, backPawR];
+
 document.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  parts.forEach(p => p.el.classList.add('is-visible'));
+  allParts.forEach(p => p.el.classList.add('is-visible'));
 
   // Hide cursor parts when hovering over text inputs
   const t = e.target;
@@ -865,10 +871,10 @@ document.addEventListener('mousemove', (e) => {
   document.body.classList.toggle('cursor-over-input', isTextInput);
 });
 document.addEventListener('mouseleave', () => {
-  parts.forEach(p => p.el.classList.remove('is-visible'));
+  allParts.forEach(p => p.el.classList.remove('is-visible'));
 });
 document.addEventListener('mouseenter', () => {
-  parts.forEach(p => p.el.classList.add('is-visible'));
+  allParts.forEach(p => p.el.classList.add('is-visible'));
 });
 
 function animateCat() {
@@ -877,12 +883,10 @@ function animateCat() {
   const dy = mouseY - prevMY;
   const len = Math.sqrt(dx * dx + dy * dy);
   if (len > 0.5) {
-    // Smoothly blend direction toward current movement
     const nx = dx / len;
     const ny = dy / len;
     dirX += (nx - dirX) * 0.15;
     dirY += (ny - dirY) * 0.15;
-    // Re-normalize
     const dlen = Math.sqrt(dirX * dirX + dirY * dirY) || 1;
     dirX /= dlen;
     dirY /= dlen;
@@ -890,10 +894,10 @@ function animateCat() {
   prevMX = mouseX;
   prevMY = mouseY;
 
-  // Chain follow: each part targets a point behind the previous part, in the OPPOSITE direction of travel
+  // Chain follow (ball → head → body)
   let prevX = mouseX;
   let prevY = mouseY;
-  parts.forEach((p) => {
+  chain.forEach((p) => {
     const targetX = prevX - dirX * p.spacing;
     const targetY = prevY - dirY * p.spacing;
     p.x += (targetX - p.x) * p.ease;
@@ -902,6 +906,47 @@ function animateCat() {
     prevX = p.x;
     prevY = p.y;
   });
+
+  // ── Paws: pairs arranged horizontally on screen x-axis only ──
+  // Vertical center (y) = body bottom. Front paws forward of body, back paws behind body.
+  const BODY_RADIUS  = 22; // body is 48px → bottom edge = +22 from center
+  const FRONT_X_OFS  = 10; // forward shift (scaled by dirX for screen-forward direction)
+  const BACK_X_OFS   = 10; // backward shift
+  const FRONT_SPREAD = 7;  // narrow pair spread (screen-horizontal only)
+  const BACK_SPREAD  = 13; // wider pair spread
+
+  // "Forward"/"back" uses only the x-component of motion direction so the pair is
+  // always a horizontal row on screen, never stacked vertically.
+  const fCenterX = bodyPart.x + dirX * FRONT_X_OFS;
+  const bCenterX = bodyPart.x - dirX * BACK_X_OFS;
+  const pawsY    = bodyPart.y + BODY_RADIUS;
+
+  const fL_tx = fCenterX - FRONT_SPREAD, fL_ty = pawsY;
+  const fR_tx = fCenterX + FRONT_SPREAD, fR_ty = pawsY;
+  const bL_tx = bCenterX - BACK_SPREAD,  bL_ty = pawsY;
+  const bR_tx = bCenterX + BACK_SPREAD,  bR_ty = pawsY;
+
+  const pawEase = 0.30;
+  frontPawL.x += (fL_tx - frontPawL.x) * pawEase;
+  frontPawL.y += (fL_ty - frontPawL.y) * pawEase;
+  frontPawR.x += (fR_tx - frontPawR.x) * pawEase;
+  frontPawR.y += (fR_ty - frontPawR.y) * pawEase;
+  backPawL.x  += (bL_tx - backPawL.x)  * pawEase;
+  backPawL.y  += (bL_ty - backPawL.y)  * pawEase;
+  backPawR.x  += (bR_tx - backPawR.x)  * pawEase;
+  backPawR.y  += (bR_ty - backPawR.y)  * pawEase;
+
+  frontPawL.el.style.transform = `translate(${frontPawL.x}px, ${frontPawL.y}px) translate(-50%, -50%)`;
+  frontPawR.el.style.transform = `translate(${frontPawR.x}px, ${frontPawR.y}px) translate(-50%, -50%)`;
+  backPawL.el.style.transform  = `translate(${backPawL.x}px, ${backPawL.y}px) translate(-50%, -50%)`;
+  backPawR.el.style.transform  = `translate(${backPawR.x}px, ${backPawR.y}px) translate(-50%, -50%)`;
+
+  // ── Tail: bottom of tail at body center, doesn't separate from body ──
+  tailPart.x += (bodyPart.x - tailPart.x) * 0.32;
+  tailPart.y += (bodyPart.y - tailPart.y) * 0.32;
+  // translate(-50%, -100%) → tail's bottom-center anchors at (tailX, tailY) = body center
+  tailPart.el.style.transform = `translate(${tailPart.x}px, ${tailPart.y}px) translate(-50%, -100%)`;
+
   requestAnimationFrame(animateCat);
 }
 animateCat();
