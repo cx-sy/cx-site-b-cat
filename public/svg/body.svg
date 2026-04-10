@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="194px" height="194px" viewBox="0 0 194 194" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>몸통</title>
-    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Frame" transform="translate(-566, -155)" fill="#000000" stroke="#FFFFFF" stroke-width="2">
-            <circle id="몸통" cx="663" cy="252" r="96"></circle>
-        </g>
+<svg id="_레이어_1" data-name="레이어_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 194 194">
+  <!-- Generator: Adobe Illustrator 30.0.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 123)  -->
+  <g id="Page-2">
+    <g id="Frame">
+      <circle id="_몸통" data-name="몸통" cx="97" cy="97" r="96"/>
     </g>
+  </g>
 </svg>
